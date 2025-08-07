@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 $result = $conn->query("SELECT * FROM test_table");
 
-echo "<h1>Test Table Rows - Made by Usman and Shivang</h1>";
+echo "<h1>Test Table Rows - Made by Usman and Shivang at CKPCET</h1>";
 while ($row = $result->fetch_assoc()) {
     echo "<pre>" . print_r($row, true) . "</pre>";
 }
