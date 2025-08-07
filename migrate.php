@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 $config = include __DIR__ . '/./config/config.php';
 
 $pdo = new PDO(
@@ -8,7 +9,7 @@ $pdo = new PDO(
 );
 
 // Simple way to run a SQL file
-function runMigration($file, $pdo) {
+function runMigration(string $file, PDO $pdo) {
     $sql = file_get_contents($file);
     $pdo->exec($sql);
     echo "Ran: $file\n";

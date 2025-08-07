@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 $config = include __DIR__ . '/./config/config.php';
 
 $conn = new mysqli(
