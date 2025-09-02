@@ -6,3 +6,11 @@ function check_empty_value($value, $name, $page)
         exit;
     }
 }
+function validate_email($email, $page)
+{
+    if (!preg_match("/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$/", $email)) {
+        echo "<script>alert('Invalid email format!'); window.location.href='$page.php';</script>";
+        exit;
+    }
+
+}
