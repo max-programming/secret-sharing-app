@@ -1,3 +1,25 @@
+<?php
+session_start();
+$is_logged_in = isset($_SESSION['user_id']);
+if (!$is_logged_in) {
+  header("Location: login.php");
+  exit;
+}
+
+$conn = include 'db.php';
+
+$stmt = $conn->prepare("SELECT username, email FROM userinfo WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+$username = $user['username'];
+$email = $user['email'];
+
+$stmt->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,23 +41,18 @@
   <div class="container">
     <div class="profile-pic">
       <img
-        src="https://api.dicebear.com/7.x/bottts/svg?seed=usernameHere"
+        src="https://api.dicebear.com/7.x/bottts/svg?seed=<?php echo $username; ?>"
         alt="Avatar" />
     </div>
 
     <div class="field">
       <label>Username:</label>
-      <span>UsernameHere</span>
-    </div>
-
-    <div class="field">
-      <label>Password:</label>
-      <span>••••••••</span>
+      <span><?php echo $username; ?></span>
     </div>
 
     <div class="field">
       <label>Email:</label>
-      <span>email@example.com</span>
+      <span><?php echo $email; ?></span>
     </div>
 
     <a href="settings.php" class="button-link">Edit Profile</a>
