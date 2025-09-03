@@ -1,10 +1,5 @@
 <?php
 session_start();
-$is_logged_in = isset($_SESSION['user_id']);
-if ($is_logged_in) {
-    header("Location: index.php");
-    exit;
-}
 
 $conn = include 'db.php';
 include 'utils.php';
@@ -48,55 +43,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         $stmt->close();
     }
 }
-$page_title = "Register";
-$css_file = "register.css";
-$show_header = false;
-include 'header.php';
 ?>
-<div class="joinus">Join us!</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<form class="form" method="POST">
-    <div class="input-group">
-        <label for="name">Username</label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" id="username" required name="username" placeholder="Enter your username">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="register.css" type="text/css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="joinus">Join us!</div>
+
+        <form class="form" method="POST">
+            <div class="input-group">
+                <label for="name">Username</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" required name="username" placeholder="Enter your username">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-at"></i>
+                    <input type="email" id="email" required name="email" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="pwd">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="pwd" required name="password" placeholder="Enter Password">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="cpwd">Confirm Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="cpwd" required name="confirm_password" placeholder="Confirm Password">
+                </div>
+            </div>
+
+            <button type="submit" name="register">Register</button>
+        </form>
+        <div class="google">
+            <img src="google.jpg" id="g"> Continue with Google
+        </div>
+        <div class="facebook">
+            <img src="facebook.webp" id="f"> Continue with Facebook
         </div>
     </div>
-
-    <div class="input-group">
-        <label for="email">Email</label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-at"></i>
-            <input type="email" id="email" required name="email" placeholder="Enter your email">
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label for="pwd">Password</label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" id="pwd" required name="password" placeholder="Enter Password">
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label for="cpwd">Confirm Password</label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" id="cpwd" required name="confirm_password" placeholder="Confirm Password">
-        </div>
-    </div>
-
-    <button type="submit" name="register">Register</button>
-</form>
-<div class="google">
-    <img src="google.jpg" id="g"> Continue with Google
-</div>
-<div class="facebook">
-    <img src="facebook.webp" id="f"> Continue with Facebook
-</div>
-</div>
 </body>
 
 </html>
