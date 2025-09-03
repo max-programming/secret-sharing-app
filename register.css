@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
 body {
   background-color: #f0f2f5;
   background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4dae3' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M3 10h14v1H3z'/%3E%3Cpath d='M10 3h1v14h-1z'/%3E%3C/g%3E%3C/svg%3E");

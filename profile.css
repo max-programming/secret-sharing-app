@@ -1,25 +1,80 @@
-.body {
+body {
   background-color: aliceblue;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: white;
 }
+
 .container {
-  height: 500px;
+  height: auto;
   width: 400px;
-  border: 2px solid;
+  border: 2px solid #333;
   border-radius: 20px;
   display: block;
+  padding: 30px;
+  background-color: #111;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-.container img {
-  margin-left: 120px;
-  margin-top: 50px;
+
+.profile-pic {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-pic img {
   height: 150px;
   width: 150px;
   border-radius: 50%;
-  text-align: center;
-  justify-content: center;
+  border: 3px solid #333;
 }
+
+.field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  margin: 15px 0;
+  background-color: #222;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+.field label {
+  font-size: 14px;
+  color: #888;
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.field span {
+  font-size: 16px;
+  color: #ccc;
+  flex-grow: 1;
+  text-align: right;
+}
+
+.button-link {
+  display: block;
+  text-align: center;
+  padding: 12px 20px;
+  margin: 30px auto 0;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+}
+
+.button-link:hover {
+  background-color: #0056b3;
+}
+
 .username {
   font-size: 20px;
   margin-top: 30px;
