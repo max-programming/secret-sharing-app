@@ -29,7 +29,7 @@ $is_logged_in = isset($_SESSION['user_id']);
                             <li id="settings">Settings</li>
                         </a>
                         <button>
-                            <a href="logout.php">
+                            <a href="logout.php" onclick="return confirm('Are you sure you want to logout?')">
                                 <li id="logout">Logout</li>
                             </a>
                         </button>
