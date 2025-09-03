@@ -2,27 +2,107 @@
 session_start();
 $is_logged_in = isset($_SESSION['user_id']);
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<?php if ($is_logged_in): ?>
-    <a href="#"><i class="fa-solid fa-user"></i>
-        <li id="profile">Profile</li>
-    </a>
-    <a href="#"><i class="fa-solid fa-gear"></i>
-        <li id="settings">Settings</li>
-    </a>
-    <button>
-        <a href="#">
-            <li id="logout">Logout</li>
-        </a>
-    </button>
-<?php else: ?>
-    <button id="login">
-        <a href="login.php">
-            <li id="login2">Login</li>
-        </a>
-    </button>
-    <a href="register.php">
-        <li>Register</li>
-    </a>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhisperBox | Home</title>
+    <link rel="stylesheet" href="home.css" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
+</head>
 
-<?php endif; ?>
+<body>
+    <div class="container">
+        <header>
+            <div class="header">
+                <ul>
+                    <li id="secrets">WhisperBox</li>
+                    <?php if ($is_logged_in): ?>
+                        <a href="#"><i class="fa-solid fa-user"></i>
+                            <li id="profile">Profile</li>
+                        </a>
+                        <a href="#"><i class="fa-solid fa-gear"></i>
+                            <li id="settings">Settings</li>
+                        </a>
+                        <button>
+                            <a href="logout.php">
+                                <li id="logout">Logout</li>
+                            </a>
+                        </button>
+                    <?php else: ?>
+                        <button id="login">
+                            <a href="login.php">
+                                <li id="login2">Login</li>
+                            </a>
+                        </button>
+                        <a href="register.php">
+                            <li>Register</li>
+                        </a>
+                        <a href="about.php">
+                            <li>About</li>
+                        </a>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </header>
+
+        <main>
+            <div class="content">
+                <div class="hero">
+                    <div class="text-block">
+                        <h1>Welcome to WhisperBox</h1>
+                        <p>
+                            Share your thoughts while staying anonymous. This platform
+                            offers a secure and private space to express your ideas,
+                            experiences, or concerns openly. Your privacy is protected,
+                            allowing you to communicate freely without fear of exposure or
+                            judgment.
+                        </p>
+                    </div>
+                    <div class="image-container">
+                        <img src="image.png" alt="Secret Sharing" />
+                    </div>
+                </div>
+
+                <div class="features">
+                    <div id="box3">
+                        Anonymus Messaging <i class="fa-solid fa-user-secret"></i>
+                    </div>
+                    <div id="box3">
+                        OTP Verification <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div id="box1">
+                        End-to-End-Encryption <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div id="box2">
+                        Self-Destructive <i class="fa-solid fa-trash"></i>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <hr />
+                    <div class="encrypt">
+                        <textarea
+                            id="textarea"
+                            placeholder="Enter your message..."
+                            rows="5"></textarea>
+                        <button id="otp">Encrypt & Generate OTP</button>
+                    </div>
+
+                    <div class="decrypt">
+                        <input
+                            type="text"
+                            id="textarea2"
+                            placeholder="Enter your OTP..." />
+                        <button id="decrypt">Decrypt Message</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
