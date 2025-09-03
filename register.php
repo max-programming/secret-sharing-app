@@ -62,7 +62,6 @@
 
 </html>
 <?php
-session_start();
 $conn = include 'db.php';
 include 'utils.php';
 
@@ -92,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         if ($stmt->execute()) {
             // get newly inserted user ID directly
             $user_id = $stmt->insert_id;
+            session_start();
 
             $_SESSION['user_id'] = $user_id;
             $_SESSION['username'] = $username;
