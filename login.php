@@ -1,5 +1,10 @@
 <?php
 session_start();
+$is_logged_in = isset($_SESSION['user_id']);
+if ($is_logged_in) {
+    header("Location: index.php");
+    exit;
+}
 
 $conn = include 'db.php';
 include 'utils.php';
@@ -38,53 +43,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $conn->close();
 }
 
+$page_title = "Login";
+$css_file = "./login.css";
+$show_header = false;
+include 'header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
+<div class="welcome">Welcome back to WhisperBox!</div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="./login.css" type="text/css" />
-</head>
-
-<body>
-    <div class="container">
-        <div class="welcome">Welcome back to WhisperBox!</div>
-
-        <form class="form" method="POST">
-            <div class="input-group">
-                <label for="username">Username</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="username" required name="username" placeholder="Enter your username">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" required name="password" placeholder="Enter your password">
-                </div>
-            </div>
-
-            <div class="extra">
-                <div class="fp"><a href="#">Forgot Password?</a></div>
-                <div class="reg"><a href="register.php">Create Account</a></div>
-            </div>
-
-            <button type="submit" name="login">Login</button>
-        </form>
-
-        <div class="google">
-            <img src="google.jpg" id="g"> Continue with Google
-        </div>
-        <div class="facebook">
-            <img src="facebook.webp" id="f"> Continue with Facebook
+<form class="form" method="POST">
+    <div class="input-group">
+        <label for="username">Username</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="username" required name="username" placeholder="Enter your username">
         </div>
     </div>
+
+    <div class="input-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" required name="password" placeholder="Enter your password">
+        </div>
+    </div>
+
+    <div class="extra">
+        <div class="fp"><a href="#">Forgot Password?</a></div>
+        <div class="reg"><a href="register.php">Create Account</a></div>
+    </div>
+
+    <button type="submit" name="login">Login</button>
+</form>
+
+<div class="google">
+    <img src="google.jpg" id="g"> Continue with Google
+</div>
+<div class="facebook">
+    <img src="facebook.webp" id="f"> Continue with Facebook
+</div>
+</div>
 </body>
 
 </html>
