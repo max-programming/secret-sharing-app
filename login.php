@@ -1,3 +1,44 @@
+<?php
+session_start();
+
+$conn = include 'db.php';
+include 'utils.php';
+
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    check_empty_value($username, 'Username', 'login');
+    check_empty_value($password, 'Password', 'login');
+
+    $stmt = $conn->prepare("SELECT id, username, password FROM userinfo WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+
+        // Verify password
+        if (password_verify($password, $user['password'])) {
+            // set session variables
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+
+            header("Location: index.php");
+            exit;
+        } else {
+            echo "<script>alert('Invalid password.');</script>";
+        }
+    } else {
+        echo "<script>alert('No user found with that username.');</script>";
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,44 +77,3 @@
 </body>
 
 </html>
-<?php
-
-$conn = include 'db.php';
-include 'utils.php';
-
-if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    check_empty_value($username, 'Username', 'login');
-    check_empty_value($password, 'Password', 'login');
-
-    $stmt = $conn->prepare("SELECT id, username, password FROM userinfo WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-
-        // Verify password
-        if (password_verify($password, $user['password'])) {
-            // Start session and set session variables
-            session_start();
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-
-            header("Location: index.php");
-            exit;
-        } else {
-            echo "<script>alert('Invalid password.');</script>";
-        }
-    } else {
-        echo "<script>alert('No user found with that username.');</script>";
-    }
-
-    $stmt->close();
-    $conn->close();
-}
-
-?>

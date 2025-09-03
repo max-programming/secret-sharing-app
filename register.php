@@ -1,3 +1,49 @@
+<?php
+session_start();
+
+$conn = include 'db.php';
+include 'utils.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+    $username = $conn->real_escape_string($_POST['username']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    check_empty_value($username, "Username", "register");
+    check_empty_value($email, "Email", "register");
+    check_empty_value($password, "Password", "register");
+    check_empty_value($confirm_password, "Confirm Password", "register");
+    validate_email($email, "register");
+
+
+
+    if ($password !== $confirm_password) {
+        echo "<script>alert('Passwords do not match!'); window.location.href='register.php';</script>";
+        exit;
+    } else {
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+        $stmt = $conn->prepare("INSERT INTO userinfo (username, email, password) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $username, $email, $hashed_password);
+
+        if ($stmt->execute()) {
+            // get newly inserted user ID directly
+            $user_id = $stmt->insert_id;
+
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['username'] = $username;
+
+            // redirect without echoing before
+            header("Location: index.php?registered=1");
+            exit;
+        } else {
+            echo "<script>alert('Error: " . $stmt->error . "');</script>";
+        }
+        $stmt->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,48 +107,3 @@
 </body>
 
 </html>
-<?php
-$conn = include 'db.php';
-include 'utils.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-    $username = $conn->real_escape_string($_POST['username']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    check_empty_value($username, "Username", "register");
-    check_empty_value($email, "Email", "register");
-    check_empty_value($password, "Password", "register");
-    check_empty_value($confirm_password, "Confirm Password", "register");
-    validate_email($email, "register");
-
-
-
-    if ($password !== $confirm_password) {
-        echo "<script>alert('Passwords do not match!'); window.location.href='register.php';</script>";
-        exit;
-    } else {
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-        $stmt = $conn->prepare("INSERT INTO userinfo (username, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $username, $email, $hashed_password);
-
-        if ($stmt->execute()) {
-            // get newly inserted user ID directly
-            $user_id = $stmt->insert_id;
-            session_start();
-
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['username'] = $username;
-
-            // redirect without echoing before
-            header("Location: index.php?registered=1");
-            exit;
-        } else {
-            echo "<script>alert('Error: " . $stmt->error . "');</script>";
-        }
-        $stmt->close();
-    }
-}
-?>
