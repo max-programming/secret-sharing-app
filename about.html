@@ -4,36 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to right #101e71, #0a113a, black);
-        color: white;
-      }
-      .container {
-        max-width: 800px;
-        margin: auto;
-        padding: 10px;
-        background-color: #555f98;
-        border-radius: 8px;
-        height: 480px;
-        width: 100%;
-        margin-top: 50px;
-        font-size: 16px;
-      }
-
-      .footer {
-        background-color: black;
-        width: 100%;
-        height: 120px;
-        text-align: center;
-        padding: 20px;
-        margin-top: 50px;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        box-shadow: 15px 15px 15px rgba(241, 233, 233, 0.3);
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="about.css" />
+    <style></style>
   </head>
   <body>
     <div class="container">
@@ -41,12 +17,10 @@
       <div class="Welcome">
         <div>Welcome to Whim.</div>
         <br /><br />
-
         We are thrilled to introduce you to our innovative secret-sharing
         application designed to keep your private messages secure and
         confidential., a platform where your secrets are safe with us. In
-        today's digital age, privacy is more important.<br />
-        <br />
+        today's digital age, privacy is more important.<br /><br />
         <div id="hiw">How it Works:</div>
         <ol class="list">
           <li>
@@ -54,13 +28,11 @@
             box.
           </li>
           <br />
-
           <li>
             Encrypt and share: With a single click, your message is encrypted,
             and a unique One-Time Password (OTP) is generated.
           </li>
           <br />
-
           <li>
             Unlock the secret: The recipient enters the OTP to reveal your
             message. Once viewed, the message is gone forever.
@@ -73,12 +45,16 @@
         </ol>
       </div>
     </div>
+
     <div class="footer">
       <div class="contact">
-        <div>Contact Us:</div>
-        <div id="email"></div>
-        <div id="whats"></div>
-        <div></div>
+        <a href="mailto:example@example.com"
+          ><i class="fa-solid fa-envelope"></i
+        ></a>
+        <a href="tel:+1234567890"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://x.com/username" target="_blank"
+          ><i class="fa-brands fa-x-twitter"></i
+        ></a>
       </div>
     </div>
   </body>

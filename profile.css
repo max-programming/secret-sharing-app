@@ -1,0 +1,29 @@
+.body {
+  background-color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  height: 500px;
+  width: 400px;
+  border: 2px solid;
+  border-radius: 20px;
+  display: block;
+}
+.container img {
+  margin-left: 120px;
+  margin-top: 50px;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  text-align: center;
+  justify-content: center;
+}
+.username {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-left: 20px;
+  font-family: "Poppins";
+  opacity: 0.6;
+}
