@@ -48,7 +48,7 @@ if (isset($_POST['login'])) {
     check_empty_value($username, 'Username', 'login');
     check_empty_value($password, 'Password', 'login');
 
-    $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, username, password FROM userinfo WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
