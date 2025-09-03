@@ -22,10 +22,10 @@ $is_logged_in = isset($_SESSION['user_id']);
                 <ul>
                     <li id="secrets">WhisperBox</li>
                     <?php if ($is_logged_in): ?>
-                        <a href="profile.html"><i class="fa-solid fa-user"></i>
+                        <a href="profile.php"><i class="fa-solid fa-user"></i>
                             <li id="profile">Profile</li>
                         </a>
-                        <a href="#"><i class="fa-solid fa-gear"></i>
+                        <a href="settings.php"><i class="fa-solid fa-gear"></i>
                             <li id="settings">Settings</li>
                         </a>
                         <button>
