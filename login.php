@@ -4,7 +4,7 @@ session_start();
 $conn = include 'db.php';
 include 'utils.php';
 
-if (isset($_POST['login'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -46,32 +46,43 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="login.css" type="text/css" />
+    <link rel="stylesheet" href="./login.css" type="text/css" />
 </head>
 
 <body>
-    <div class="conatiner">
-        <div class="welcome">Welcome back to whim!</div>
-        <div class="container2">
-            <form method="POST" class="form">
-                <div id="uname">
-                    <div class="usericon"><i class="fa-solid fa-user"></i></div>
-                    <input type="text" required name="username" placeholder="Username">
+    <div class="container">
+        <div class="welcome">Welcome back to WhisperBox!</div>
+
+        <form class="form" method="POST">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" required name="username" placeholder="Enter your username">
                 </div>
-                <div id="pwd">
-                    <div class="pwdicon"><i class="fa-solid fa-lock"></i></div>
-                    <input type="password" required name="password" placeholder="Password">
-                </div>
-                <div class="extra">
-                    <div class="fp"><a href="">Forgot Password?</a></div>
-                    <div class="reg"><a href="register.html">Create Account</a></div>
-                </div>
-            </form>
-            <div id="login">
-                <button type="submit" name="login">Login</button>
             </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" required name="password" placeholder="Enter your password">
+                </div>
+            </div>
+
+            <div class="extra">
+                <div class="fp"><a href="#">Forgot Password?</a></div>
+                <div class="reg"><a href="register.php">Create Account</a></div>
+            </div>
+
+            <button type="submit" name="login">Login</button>
+        </form>
+
+        <div class="google">
+            <img src="google.jpg" id="g"> Continue with Google
+        </div>
+        <div class="facebook">
+            <img src="facebook.webp" id="f"> Continue with Facebook
         </div>
     </div>
 </body>
