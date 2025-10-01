@@ -1,6 +1,6 @@
 <?php
 session_start();
-$is_logged_in = isset($_SESSION['user_id']);
+$is_logged_in = isset($_SESSION["user_id"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,27 +82,22 @@ $is_logged_in = isset($_SESSION['user_id']);
                         Self-Destructive <i class="fa-solid fa-trash"></i>
                     </div>
                 </div>
-                <div class="button-container">
+                <form class="button-container" id="message_form">
                     <hr />
                     <div class="encrypt">
                         <textarea
                             id="textarea"
                             placeholder="Enter your message..."
+                            name="message"
                             rows="5"></textarea>
-                        <button id="otp">Encrypt & Generate OTP</button>
+                        <button type="submit" id="otp">Encrypt & Generate OTP</button>
                     </div>
-
-                    <div class="decrypt">
-                        <input
-                            type="text"
-                            id="textarea2"
-                            placeholder="Enter your OTP..." />
-                        <button id="decrypt">Decrypt Message</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </main>
     </div>
 </body>
+
+<script src="/index.js"></script>
 
 </html>
