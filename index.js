@@ -84,7 +84,7 @@ async function encryptMessage(message, otp) {
   };
 }
 
-export async function decryptMessage(encryptedWhim, otp) {
+async function decryptMessage(encryptedWhim, otp) {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
