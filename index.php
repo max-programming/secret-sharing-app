@@ -10,9 +10,7 @@ $is_logged_in = isset($_SESSION["user_id"]);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WhisperBox | Home</title>
     <link rel="stylesheet" href="home.css" type="text/css" />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
 </head>
 
 <body>
@@ -85,11 +83,7 @@ $is_logged_in = isset($_SESSION["user_id"]);
                 <form class="button-container" id="message_form">
                     <hr />
                     <div class="encrypt">
-                        <textarea
-                            id="textarea"
-                            placeholder="Enter your message..."
-                            name="message"
-                            rows="5"></textarea>
+                        <textarea id="textarea" placeholder="Enter your message..." name="message" rows="5"></textarea>
                         <button type="submit" id="otp">Encrypt & Generate OTP</button>
                     </div>
                 </form>
@@ -98,6 +92,6 @@ $is_logged_in = isset($_SESSION["user_id"]);
     </div>
 </body>
 
-<script src="/index.js"></script>
+<script src="index.js"></script>
 
 </html>

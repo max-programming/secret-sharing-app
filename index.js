@@ -17,14 +17,22 @@ messageForm.addEventListener("submit", (event) => {
       const iv = new Uint8Array(encryptedData.iv);
 
       const fd = new FormData();
-      fd.append("encryptedMessage", encryptedMessage);
-      fd.append("salt", salt);
-      fd.append("iv", iv);
+      fd.append("encryptedMessage", new Blob([encryptedMessage]));
+      fd.append("salt", new Blob([salt]));
+      fd.append("iv", new Blob([iv]));
 
       fetch("submit.php", {
         method: "POST",
         body: fd,
-      });
+      })
+        .then((response) => response.json())
+        .then((body) => {
+          const secretUrl = `${window.location.origin}/secret.php?id=${body.id}`;
+          alert(
+            `Secret saved! Your OTP is: ${otp}. Secret URL is ${secretUrl}`
+          );
+          form.reset();
+        });
 
       // todo: display otp and url of the secret
     })
@@ -50,7 +58,7 @@ async function encryptMessage(message, otp) {
     encoder.encode(otp),
     { name: KEY_ALGORITHM },
     false,
-    ["deriveKey"],
+    ["deriveKey"]
   );
 
   const derivedKey = await crypto.subtle.deriveKey(
@@ -63,7 +71,7 @@ async function encryptMessage(message, otp) {
     key,
     { name: CIPHER_ALGORITHM, length: KEY_LENGTH },
     false,
-    ["encrypt"],
+    ["encrypt"]
   );
 
   const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH));
@@ -74,7 +82,7 @@ async function encryptMessage(message, otp) {
       iv,
     },
     derivedKey,
-    encoder.encode(message),
+    encoder.encode(message)
   );
 
   return {
@@ -93,7 +101,7 @@ async function decryptMessage(encryptedWhim, otp) {
     encoder.encode(otp),
     { name: KEY_ALGORITHM },
     false,
-    ["deriveKey"],
+    ["deriveKey"]
   );
 
   const derivedKey = await crypto.subtle.deriveKey(
@@ -106,7 +114,7 @@ async function decryptMessage(encryptedWhim, otp) {
     key,
     { name: CIPHER_ALGORITHM, length: KEY_LENGTH },
     false,
-    ["decrypt"],
+    ["decrypt"]
   );
 
   const decryptedData = await crypto.subtle.decrypt(
@@ -115,7 +123,7 @@ async function decryptMessage(encryptedWhim, otp) {
       iv: new Uint8Array(encryptedWhim.iv),
     },
     derivedKey,
-    new Uint8Array(encryptedWhim.encryptedMessage),
+    new Uint8Array(encryptedWhim.encryptedMessage)
   );
 
   return decoder.decode(decryptedData);
