@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invalid OTP</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #141e30, #243b55);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #fff;
+      }
+
+      .container {
+        background: #2c2f38;
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        width: 360px;
+        box-shadow: 5px 5px 5px rgba(208, 10, 10, 0.4);
+      }
+
+      h1 {
+        color: #ff4d4d;
+        margin-bottom: 15px;
+      }
+
+      p {
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        background: #ff4d4d;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Invalid OTP</h1>
+      <p>The OTP you entered is incorrect. Please try again.</p>
+      <button class="btn" onclick="window.history.back()">Go Back</button>
+    </div>
+  </body>
+</html>
