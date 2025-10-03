@@ -31,7 +31,7 @@ messageForm.addEventListener("submit", (event) => {
       })
         .then((response) => response.json())
         .then((body) => {
-          const secretUrl = `${window.location.origin}/secret-sharing-app/view.php?id=${body.id}`;
+          const secretUrl = `${window.location.origin}/view.php?id=${body.id}`;
           alert(
             `Secret saved! Your OTP is: ${otp}. Secret URL is ${secretUrl}`,
           );

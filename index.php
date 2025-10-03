@@ -82,6 +82,7 @@ $conn->close();
                     </div>
                 </div>
 
+                <?php if ($is_logged_in): ?>
                 <form class="button-container" id="message_form">
                     <hr />
                     <div class="encrypt">
@@ -89,18 +90,27 @@ $conn->close();
                         <button type="submit" id="otp">Encrypt & Generate OTP</button>
                     </div>
                 </form>
+                <?php else: ?>
+                <div style="display: flex; align-items: center; justify-content: center; font-style: normal;">
+                  <h2>Please <a href="login.php" style="color: blue; text-decoration: underline;">login</a> or <a href="register.php" style="color: blue; text-decoration: underline;">register</a> to access the platform.</h2>
+                </div>
+                <?php endif; ?>
 
                 <div class="stats-section">
                     <h2>Platform Statistics</h2>
                     <div class="stats-container">
                         <div class="stat-box">
                             <i class="fa-solid fa-lock"></i>
-                            <div class="stat-number"><?php echo number_format($stats['created_secrets']); ?></div>
+                            <div class="stat-number"><?php echo number_format(
+                              $stats["created_secrets"],
+                            ); ?></div>
                             <div class="stat-label">Secrets Created</div>
                         </div>
                         <div class="stat-box">
                             <i class="fa-solid fa-fire"></i>
-                            <div class="stat-number"><?php echo number_format($stats['destroyed_secrets']); ?></div>
+                            <div class="stat-number"><?php echo number_format(
+                              $stats["destroyed_secrets"],
+                            ); ?></div>
                             <div class="stat-label">Secrets Destroyed</div>
                         </div>
                     </div>

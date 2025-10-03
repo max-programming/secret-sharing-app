@@ -70,6 +70,7 @@ if (!isset($_GET["id"])) {
   $secret_id = $_GET["id"];
 }
 
+$data = null;
 $error_message = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["otp"])) {
   try {
@@ -82,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["otp"])) {
     $secret = $result->fetch_assoc();
 
     if (!isset($secret)) {
-      $data = null;
+      $data = [];
     } else {
       $data = [
         "encryptedMessage" => $secret["message"],
@@ -227,7 +228,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["otp"])) {
           <p>The OTP you entered is incorrect. Please try again.</p>
           <button class="btn" onclick="window.location.replace(window.location.href)">Retry</button>
         </div>
-      <?php elseif ($data == null && $_SERVER["REQUEST_METHOD"] === "POST"): ?>
+      <?php elseif (
+        isset($data) &&
+        count($data) == 0 &&
+        $_SERVER["REQUEST_METHOD"] === "POST"
+      ): ?>
         <div class="no_secret">
           <h1>⚠ Secret Does Not Exist</h1>
           <p>

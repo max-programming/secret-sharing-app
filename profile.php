@@ -92,8 +92,8 @@ $conn->close();
       <div class="secrets-list">
         <?php foreach ($secrets as $secret): ?>
           <div class="secret-item" id="secret-<?php echo htmlspecialchars(
-                                                $secret["id"],
-                                              ); ?>">
+            $secret["id"],
+          ); ?>">
             <div class="secret-info">
               <div class="secret-id">
                 <label>ID:</label>
@@ -102,24 +102,25 @@ $conn->close();
               <div class="secret-date">
                 <label>Created:</label>
                 <span><?php echo date(
-                        'M j, Y \a\t g:i A',
-                        strtotime($secret["created_at"]),
-                      ); ?></span>
+                  'M j, Y \a\t g:i A',
+                  strtotime($secret["created_at"]),
+                ); ?></span>
               </div>
               <div class="secret-url">
                 <label>Share URL:</label>
                 <div class="url-container">
                   <input type="text" class="url-input" readonly
                     value="<?php echo htmlspecialchars(
-                              (isset($_SERVER["HTTPS"]) &&
-                                $_SERVER["HTTPS"] === "on"
-                                ? "https://"
-                                : "http://") .
-                                $_SERVER["HTTP_HOST"] .
-                                "/secret-sharing-app/view.php?id=" .
-                                $secret["id"],
-                            ); ?>">
-                  <button class="copy-btn" onclick="copyToClipboard(window.location.hostname + '/secret-sharing-app/view.php?id=<?php echo htmlspecialchars($secret['id']); ?>', event.target)">
+                      (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on"
+                        ? "https://"
+                        : "http://") .
+                        $_SERVER["HTTP_HOST"] .
+                        "/view.php?id=" .
+                        $secret["id"],
+                    ); ?>">
+                  <button class="copy-btn" onclick="copyToClipboard(window.location.hostname + '/view.php?id=<?php echo htmlspecialchars(
+                    $secret["id"],
+                  ); ?>', event.target)">
                     Copy
                   </button>
                 </div>
