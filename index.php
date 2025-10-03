@@ -52,14 +52,9 @@ $is_logged_in = isset($_SESSION["user_id"]);
             <div class="content">
                 <div class="hero">
                     <div class="text-block">
-                        <h1>Welcome to WhisperBox</h1>
+                        <h1 style="color: ">Welcome to WhisperBox</h1>
                         <p>
-                            Share your thoughts while staying anonymous. This platform
-                            offers a secure and private space to express your ideas,
-                            experiences, or concerns openly. Your privacy is protected,
-                            allowing you to communicate freely without fear of exposure or
-                            judgment.
-                        </p>
+                            Share your thoughts while staying <i>anonymous<i>. </p>
                     </div>
                     <div class="image-container">
                         <img src="image.png" alt="Secret Sharing" />

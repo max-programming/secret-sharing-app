@@ -67,29 +67,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save-changes'])) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile Settings</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-    rel="stylesheet" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="settings.css" type="text/css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <a href="profile.php" class="back-link">
-        <i class="fa-solid fa-arrow-left"></i> Back to Profile
+      <a href="index.php" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to home
       </a>
       <h2>Profile Settings</h2>
     </div>
 
     <div class="profile-pic">
       <div class="avatar-container">
-        <img
-          src="https://api.dicebear.com/7.x/bottts/svg?seed=<?php echo $username; ?>"
-          alt="Avatar" />
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=<?php echo $username; ?>" alt="Avatar" />
         <div class="tooltip">Avatar is auto-generated based on your username</div>
       </div>
     </div>
