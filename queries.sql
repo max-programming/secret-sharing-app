@@ -3,7 +3,7 @@ CREATE TABLE userinfo (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    PASSWORD VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE secrets (
@@ -15,3 +15,14 @@ CREATE TABLE secrets (
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES userinfo(id) ON DELETE CASCADE
 );
+
+CREATE TABLE stats (
+    id INT PRIMARY KEY DEFAULT 1,
+    created_secrets INT NOT NULL DEFAULT 0,
+    destroyed_secrets INT NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CHECK (id = 1)
+);
+
+INSERT INTO stats (id, created_secrets, destroyed_secrets)
+VALUES (1, 0, 0);

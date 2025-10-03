@@ -1,5 +1,6 @@
 <?php
 $conn = include "db.php";
+include "stats_helper.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $request_data = json_decode(file_get_contents("php://input"), true);
@@ -27,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $stmt->bind_param("s", $secret_id_to_delete);
       if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
+          // Increment the destroyed secrets counter
+          incrementDestroyedSecrets($conn);
+
           echo json_encode([
             "status" => "success",
             "message" => "Secret deleted successfully.",
@@ -130,12 +134,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["otp"])) {
     }
 
     #message_container {
-        display: none; /* Hide message container by default */
-        text-align: left;
-        background: #1e1f24;
-        padding: 20px;
-        border-radius: 8px;
-        word-wrap: break-word;
+      display: none;
+      /* Hide message container by default */
+      text-align: left;
+      background: #1e1f24;
+      padding: 20px;
+      border-radius: 8px;
+      word-wrap: break-word;
     }
 
     .id {
@@ -204,145 +209,147 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["otp"])) {
 <body>
   <div class="container">
     <div class="access-secret">
-    <h1>Access Secret</h1>
-    <div class="id">
-      <p>
-        Secret's ID:
-        <?= htmlspecialchars($secret_id) ?>
-      </p>
-    </div>
-
-    <?php if (isset($secret)): ?>
-    <div id="message_container">
-      <h3>Decrypted Message</h3>
-      <p></p>
-    </div>
-    <div class="invalid_otp" style="display: none;">
-      <h1>Invalid OTP</h1>
-      <p>The OTP you entered is incorrect. Please try again.</p>
-      <button class="btn" onclick="window.location.replace(window.location.href)">Retry</button>
-    </div>
-    <?php elseif ($data == null && $_SERVER["REQUEST_METHOD"] === "POST"): ?>
-    <div class="no_secret">
-      <h1>⚠ Secret Does Not Exist</h1>
-      <p>
-        It seems that this secret may have already been accessed or has expired.
-      </p>
-      <button class="btn" onclick="window.location.href='index.php'">
-        Go Home
-      </button>
-    </div>
-    <?php else: ?>
-    <form method="POST" id="otp_form">
-      <div class="otp-inputs">
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
-        <input type="text" maxlength="1" />
+      <h1>Access Secret</h1>
+      <div class="id">
+        <p>
+          Secret's ID:
+          <?= htmlspecialchars($secret_id) ?>
+        </p>
       </div>
 
-      <input type="hidden" name="otp" id="otp"  />
+      <?php if (isset($secret)): ?>
+        <div id="message_container">
+          <h3>Decrypted Message</h3>
+          <p></p>
+        </div>
+        <div class="invalid_otp" style="display: none;">
+          <h1>Invalid OTP</h1>
+          <p>The OTP you entered is incorrect. Please try again.</p>
+          <button class="btn" onclick="window.location.replace(window.location.href)">Retry</button>
+        </div>
+      <?php elseif ($data == null && $_SERVER["REQUEST_METHOD"] === "POST"): ?>
+        <div class="no_secret">
+          <h1>⚠ Secret Does Not Exist</h1>
+          <p>
+            It seems that this secret may have already been accessed or has expired.
+          </p>
+          <button class="btn" onclick="window.location.href='index.php'">
+            Go Home
+          </button>
+        </div>
+      <?php else: ?>
+        <form method="POST" id="otp_form">
+          <div class="otp-inputs">
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+            <input type="text" maxlength="1" />
+          </div>
 
-      <div class="warning">
-        ⚠ One-Time Access <br />
-        This secret will be permanently destroyed after viewing. Make sure
-        you're ready to access it now.
-      </div>
+          <input type="hidden" name="otp" id="otp" />
 
-      <button type="submit" class="btn" id="submitBtn" disabled>
-        Submit OTP
-      </button>
-    </form>
-    <?php endif; ?>
+          <div class="warning">
+            ⚠ One-Time Access <br />
+            This secret will be permanently destroyed after viewing. Make sure
+            you're ready to access it now.
+          </div>
 
-    <div class="footer">End-to-end encrypted • Self-destructing</div>
+          <button type="submit" class="btn" id="submitBtn" disabled>
+            Submit OTP
+          </button>
+        </form>
+      <?php endif; ?>
+
+      <div class="footer">End-to-end encrypted • Self-destructing</div>
     </div>
   </div>
 
   <script src="constants.js"></script>
   <script src="decrypt.js"></script>
-<?php if (isset($secret)): ?>
-<script>
-const invalidOtp = document.querySelector(".invalid_otp");
-const messageContainer = document.getElementById("message_container");
-const otpForm = document.getElementById('otp_form'); // Get the form to hide it later
+  <?php if (isset($secret)): ?>
+    <script>
+      const invalidOtp = document.querySelector(".invalid_otp");
+      const messageContainer = document.getElementById("message_container");
+      const otpForm = document.getElementById('otp_form'); // Get the form to hide it later
 
-const encryptedData = <?php echo json_encode($data); ?>;
-const secretId = '<?php echo $secret_id; ?>';
-const otp = '<?php echo $otp; ?>';
+      const encryptedData = <?php echo json_encode($data); ?>;
+      const secretId = '<?php echo $secret_id; ?>';
+      const otp = '<?php echo $otp; ?>';
 
-  if (encryptedData) {
-    decryptMessage(encryptedData, otp).then(message => {
-      // --- THIS IS THE NEW PART ---
-      // The message was successfully decrypted. Now, delete the secret on the server.
-      console.log("Message decrypted. Now telling the server to delete the secret.");
+      if (encryptedData) {
+        decryptMessage(encryptedData, otp).then(message => {
+          // --- THIS IS THE NEW PART ---
+          // The message was successfully decrypted. Now, delete the secret on the server.
+          console.log("Message decrypted. Now telling the server to delete the secret.");
 
-      // Use the Fetch API to call this *same* PHP file with a specific action
-      fetch(window.location.href, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-              action: 'delete_secret', // This tells the PHP block at the top what to do
-              id: secretId
-          })
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.status === 'success') {
-              console.log('Server confirmed the secret was deleted.');
-          } else {
-              // Log the error, but still show the message to the user
-              console.error('Server-side deletion error:', data.message);
+          // Use the Fetch API to call this *same* PHP file with a specific action
+          fetch(window.location.href, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                action: 'delete_secret', // This tells the PHP block at the top what to do
+                id: secretId
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                console.log('Server confirmed the secret was deleted.');
+              } else {
+                // Log the error, but still show the message to the user
+                console.error('Server-side deletion error:', data.message);
+              }
+            }).catch(error => {
+              console.error('There was a problem with the fetch operation:', error);
+            });
+          // --- END OF NEW PART ---
+
+          // Hide the ID and footer
+          document.querySelector('.id').style.display = 'none';
+          document.querySelector('.footer').style.display = 'none';
+
+          // Show the decrypted message
+          messageContainer.querySelector('p').innerText = message;
+          messageContainer.style.display = "block";
+
+        }).catch(error => {
+          // This block runs if the decryption fails
+          console.error('Decryption failed:', error);
+          document.querySelector('.id').style.display = 'none';
+          document.querySelector('.footer').style.display = 'none';
+          invalidOtp.style.display = "block";
+        });
+      }
+    </script>
+  <?php else: ?>
+    <script>
+      const inputs = document.querySelectorAll(".otp-inputs input");
+      const btn = document.getElementById("submitBtn");
+      const hiddenOtp = document.getElementById("otp");
+
+      inputs.forEach((input, index) => {
+        input.addEventListener("input", () => {
+          if (input.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
           }
-      }).catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
-      });
-      // --- END OF NEW PART ---
+          updateOtp();
+        });
 
-      // Hide the ID and footer
-      document.querySelector('.id').style.display = 'none';
-      document.querySelector('.footer').style.display = 'none';
-
-      // Show the decrypted message
-      messageContainer.querySelector('p').innerText = message;
-      messageContainer.style.display = "block";
-
-    }).catch(error => {
-      // This block runs if the decryption fails
-      console.error('Decryption failed:', error);
-      document.querySelector('.id').style.display = 'none';
-      document.querySelector('.footer').style.display = 'none';
-      invalidOtp.style.display = "block";
-    });
-  }
-</script>
-<?php else: ?>
-  <script>
-    const inputs = document.querySelectorAll(".otp-inputs input");
-    const btn = document.getElementById("submitBtn");
-    const hiddenOtp = document.getElementById("otp");
-
-    inputs.forEach((input, index) => {
-      input.addEventListener("input", () => {
-        if (input.value.length === 1 && index < inputs.length - 1) {
-          inputs[index + 1].focus();
-        }
-        updateOtp();
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && input.value === "" && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
       });
 
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && input.value === "" && index > 0) {
-          inputs[index - 1].focus();
-        }
-      });
-    });
-
-    function updateOtp() {
-      const otpValue = [...inputs].map((inp) => inp.value).join("");
-      hiddenOtp.value = otpValue;
-      btn.disabled = otpValue.length !== inputs.length;
-    }
-  </script>
+      function updateOtp() {
+        const otpValue = [...inputs].map((inp) => inp.value).join("");
+        hiddenOtp.value = otpValue;
+        btn.disabled = otpValue.length !== inputs.length;
+      }
+    </script>
   <?php endif; ?>
 </body>
 

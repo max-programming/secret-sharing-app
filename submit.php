@@ -2,6 +2,7 @@
 
 session_start();
 $conn = include "db.php";
+include "stats_helper.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $encryptedMessage = $_POST["encryptedMessage"];
@@ -17,6 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $stmt->execute();
   $stmt->close();
+
+  // Increment the created secrets counter
+  incrementCreatedSecrets($conn);
 
   $idResult = $conn->query(
     "SELECT id FROM secrets WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 1",

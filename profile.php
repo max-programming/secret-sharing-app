@@ -47,14 +47,14 @@ $conn->close();
   <link rel="stylesheet" href="profile.css" type="text/css" />
   <script>
     function copyToClipboard(text, el) {
-      navigator.clipboard.writeText(text).then(function(event) {
+      navigator.clipboard.writeText(text).then((event) => {
         el.textContent = 'Copied!';
         el.style.backgroundColor = '#28a745';
-        setTimeout(function() {
+        setTimeout(() => {
           el.textContent = 'Copy';
           el.style.backgroundColor = '#007bff';
         }, 2000);
-      }, function(err) {
+      }, (err) => {
         console.error('Could not copy text: ', err);
       });
     }
@@ -80,7 +80,8 @@ $conn->close();
     </div>
 
     <a href="settings.php" class="button-link">Edit Profile</a>
-  </div> <div class="secrets-section">
+  </div>
+  <div class="secrets-section">
     <h2>Your Secrets</h2>
     <?php if (empty($secrets)): ?>
       <div class="no-secrets">
@@ -91,8 +92,8 @@ $conn->close();
       <div class="secrets-list">
         <?php foreach ($secrets as $secret): ?>
           <div class="secret-item" id="secret-<?php echo htmlspecialchars(
-            $secret["id"],
-          ); ?>">
+                                                $secret["id"],
+                                              ); ?>">
             <div class="secret-info">
               <div class="secret-id">
                 <label>ID:</label>
@@ -101,26 +102,24 @@ $conn->close();
               <div class="secret-date">
                 <label>Created:</label>
                 <span><?php echo date(
-                  'M j, Y \a\t g:i A',
-                  strtotime($secret["created_at"]),
-                ); ?></span>
+                        'M j, Y \a\t g:i A',
+                        strtotime($secret["created_at"]),
+                      ); ?></span>
               </div>
               <div class="secret-url">
                 <label>Share URL:</label>
                 <div class="url-container">
                   <input type="text" class="url-input" readonly
-                         value="<?php echo htmlspecialchars(
-                           (isset($_SERVER["HTTPS"]) &&
-                           $_SERVER["HTTPS"] === "on"
-                             ? "https://"
-                             : "http://") .
-                             $_SERVER["HTTP_HOST"] .
-                             "/secret-sharing-app/view.php?id=" .
-                             $secret["id"],
-                         ); ?>">
-                  <button class="copy-btn" onclick="copyToClipboard(window.location.hostname + '/secret-sharing-app/view.php?id=<?php echo htmlspecialchars(
-                    $secret["id"],
-                  ); ?>', event.target)">
+                    value="<?php echo htmlspecialchars(
+                              (isset($_SERVER["HTTPS"]) &&
+                                $_SERVER["HTTPS"] === "on"
+                                ? "https://"
+                                : "http://") .
+                                $_SERVER["HTTP_HOST"] .
+                                "/secret-sharing-app/view.php?id=" .
+                                $secret["id"],
+                            ); ?>">
+                  <button class="copy-btn" onclick="copyToClipboard(window.location.hostname + '/secret-sharing-app/view.php?id=<?php echo htmlspecialchars($secret['id']); ?>', event.target)">
                     Copy
                   </button>
                 </div>
@@ -130,6 +129,7 @@ $conn->close();
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
+  </div>
   </div>
 </body>
 

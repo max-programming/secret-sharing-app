@@ -1,6 +1,12 @@
 <?php
 session_start();
 $is_logged_in = isset($_SESSION["user_id"]);
+
+// Get stats for display
+$conn = include "db.php";
+include "stats_helper.php";
+$stats = getStats($conn);
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +58,7 @@ $is_logged_in = isset($_SESSION["user_id"]);
             <div class="content">
                 <div class="hero">
                     <div class="text-block">
-                        <h1 style="color: ">Welcome to WhisperBox</h1>
+                        <h1>Welcome to WhisperBox</h1>
                         <p>
                             Share your thoughts while staying <i>anonymous<i>. </p>
                     </div>
@@ -75,6 +81,7 @@ $is_logged_in = isset($_SESSION["user_id"]);
                         Self-Destructive <i class="fa-solid fa-trash"></i>
                     </div>
                 </div>
+
                 <form class="button-container" id="message_form">
                     <hr />
                     <div class="encrypt">
@@ -82,6 +89,24 @@ $is_logged_in = isset($_SESSION["user_id"]);
                         <button type="submit" id="otp">Encrypt & Generate OTP</button>
                     </div>
                 </form>
+
+                <div class="stats-section">
+                    <h2>Platform Statistics</h2>
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <i class="fa-solid fa-lock"></i>
+                            <div class="stat-number"><?php echo number_format($stats['created_secrets']); ?></div>
+                            <div class="stat-label">Secrets Created</div>
+                        </div>
+                        <div class="stat-box">
+                            <i class="fa-solid fa-fire"></i>
+                            <div class="stat-number"><?php echo number_format($stats['destroyed_secrets']); ?></div>
+                            <div class="stat-label">Secrets Destroyed</div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </main>
     </div>
