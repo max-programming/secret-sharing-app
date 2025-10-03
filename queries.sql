@@ -8,9 +8,9 @@ CREATE TABLE userinfo (
 );
 CREATE TABLE secrets (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    mesaage BLOB NOT NULL,
-    iv BLOB NOT NULL,
-    salt  BLOB NOT NULL,
+    message MEDIUMTEXT NOT NULL,
+    iv VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES userinfo(id) ON DELETE CASCADE

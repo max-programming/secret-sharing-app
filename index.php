@@ -92,6 +92,7 @@ $is_logged_in = isset($_SESSION["user_id"]);
     </div>
 </body>
 
+<script src="constants.js"></script>
 <script src="index.js"></script>
 
 </html>

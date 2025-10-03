@@ -1,30 +1,30 @@
 <?php
 
 session_start();
-$conn = include 'db.php';
+$conn = include "db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $encryptedMessage = file_get_contents($_FILES["encryptedMessage"]["tmp_name"]);
-    $salt = file_get_contents($_FILES["salt"]["tmp_name"]);
-    $iv = file_get_contents($_FILES["iv"]["tmp_name"]);
-    $user_id = (int) $_SESSION["user_id"];
+  $encryptedMessage = $_POST["encryptedMessage"];
+  $salt = $_POST["salt"];
+  $iv = $_POST["iv"];
 
-    $stmt = $conn->prepare("INSERT INTO secrets (mesaage, iv, salt, user_id) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("bbbi", $encryptedMessage, $salt, $iv, $user_id);
+  $user_id = (int) $_SESSION["user_id"];
 
-    $stmt->send_long_data(0, $encryptedMessage);
-    $stmt->send_long_data(1, $salt);
-    $stmt->send_long_data(2, $iv);
+  $stmt = $conn->prepare(
+    "INSERT INTO secrets (message, iv, salt, user_id) VALUES (?, ?, ?, ?)",
+  );
+  $stmt->bind_param("sssi", $encryptedMessage, $iv, $salt, $user_id);
 
-    $stmt->execute();
-    $stmt->close();
+  $stmt->execute();
+  $stmt->close();
 
-    $idResult = $conn->query("SELECT id FROM secrets WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 1");
-    $id = $idResult->fetch_assoc();
-    $generatedId = $id['id'];
+  $idResult = $conn->query(
+    "SELECT id FROM secrets WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 1",
+  );
+  $id = $idResult->fetch_assoc();
+  $generatedId = $id["id"];
 
-    $conn->close();
+  $conn->close();
 
-    echo json_encode(["id" => $generatedId]);
-
+  echo json_encode(["id" => $generatedId]);
 }

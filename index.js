@@ -1,5 +1,13 @@
 const messageForm = document.getElementById("message_form");
 
+function uint8ArrayToBase64(u8) {
+  let binary = "";
+  for (let i = 0; i < u8.byteLength; i++) {
+    binary += String.fromCharCode(u8[i]);
+  }
+  return btoa(binary);
+}
+
 messageForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -12,14 +20,10 @@ messageForm.addEventListener("submit", (event) => {
 
   encryptMessage(message, otp)
     .then((encryptedData) => {
-      const encryptedMessage = new Uint8Array(encryptedData.encryptedMessage);
-      const salt = new Uint8Array(encryptedData.salt);
-      const iv = new Uint8Array(encryptedData.iv);
-
       const fd = new FormData();
-      fd.append("encryptedMessage", new Blob([encryptedMessage]));
-      fd.append("salt", new Blob([salt]));
-      fd.append("iv", new Blob([iv]));
+      fd.append("encryptedMessage", encryptedData.encryptedMessage);
+      fd.append("salt", encryptedData.salt);
+      fd.append("iv", encryptedData.iv);
 
       fetch("submit.php", {
         method: "POST",
@@ -29,7 +33,7 @@ messageForm.addEventListener("submit", (event) => {
         .then((body) => {
           const secretUrl = `${window.location.origin}/secret-sharing-app/secret.php?id=${body.id}`;
           alert(
-            `Secret saved! Your OTP is: ${otp}. Secret URL is ${secretUrl}`
+            `Secret saved! Your OTP is: ${otp}. Secret URL is ${secretUrl}`,
           );
           form.reset();
         });
@@ -41,14 +45,6 @@ messageForm.addEventListener("submit", (event) => {
     });
 });
 
-const ITERATIONS = 100000;
-const SALT_LENGTH = 16;
-const IV_LENGTH = 12;
-const KEY_LENGTH = 256;
-const KEY_ALGORITHM = "PBKDF2";
-const CIPHER_ALGORITHM = "AES-GCM";
-const HASH_ALGORITHM = "SHA-256";
-
 async function encryptMessage(message, otp) {
   const encoder = new TextEncoder();
   const salt = crypto.getRandomValues(new Uint8Array(SALT_LENGTH));
@@ -58,7 +54,7 @@ async function encryptMessage(message, otp) {
     encoder.encode(otp),
     { name: KEY_ALGORITHM },
     false,
-    ["deriveKey"]
+    ["deriveKey"],
   );
 
   const derivedKey = await crypto.subtle.deriveKey(
@@ -71,7 +67,7 @@ async function encryptMessage(message, otp) {
     key,
     { name: CIPHER_ALGORITHM, length: KEY_LENGTH },
     false,
-    ["encrypt"]
+    ["encrypt"],
   );
 
   const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH));
@@ -82,51 +78,14 @@ async function encryptMessage(message, otp) {
       iv,
     },
     derivedKey,
-    encoder.encode(message)
+    encoder.encode(message),
   );
 
   return {
-    encryptedMessage: new Uint8Array(encryptedData),
-    salt,
-    iv,
+    encryptedMessage: uint8ArrayToBase64(new Uint8Array(encryptedData)),
+    salt: uint8ArrayToBase64(salt),
+    iv: uint8ArrayToBase64(iv),
   };
-}
-
-async function decryptMessage(encryptedWhim, otp) {
-  const encoder = new TextEncoder();
-  const decoder = new TextDecoder();
-
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(otp),
-    { name: KEY_ALGORITHM },
-    false,
-    ["deriveKey"]
-  );
-
-  const derivedKey = await crypto.subtle.deriveKey(
-    {
-      name: KEY_ALGORITHM,
-      salt: new Uint8Array(encryptedWhim.salt),
-      iterations: ITERATIONS,
-      hash: HASH_ALGORITHM,
-    },
-    key,
-    { name: CIPHER_ALGORITHM, length: KEY_LENGTH },
-    false,
-    ["decrypt"]
-  );
-
-  const decryptedData = await crypto.subtle.decrypt(
-    {
-      name: CIPHER_ALGORITHM,
-      iv: new Uint8Array(encryptedWhim.iv),
-    },
-    derivedKey,
-    new Uint8Array(encryptedWhim.encryptedMessage)
-  );
-
-  return decoder.decode(decryptedData);
 }
 
 function generateOtp() {
