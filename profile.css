@@ -1,10 +1,11 @@
 body {
   background-color: aliceblue;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
   min-height: 100vh;
   margin: 0;
+  padding: 40px 0; /* Add some vertical padding */
   font-family: "Poppins", sans-serif;
   color: white;
 }
@@ -81,4 +82,174 @@ body {
   margin-left: 20px;
   font-family: "Poppins";
   opacity: 0.6;
+}
+
+/* Secrets Section - UPDATED STYLES */
+.secrets-section {
+  width: 90%; /* Use more of the page width */
+  max-width: 1200px; /* Set a max width for large screens */
+  margin: 40px auto 0; /* Add space above and center it */
+  padding: 30px;
+  background-color: #111;
+  border: 2px solid #333;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.secrets-section h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #007bff;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.no-secrets {
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #222;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+.no-secrets p {
+  color: #888;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.button-link.small {
+  font-size: 14px;
+  padding: 8px 16px;
+  margin: 10px auto 0;
+}
+
+/* Secrets List - NEW GRID LAYOUT */
+.secrets-list {
+  display: grid;
+  /* Create responsive columns that are at least 350px wide */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.secret-item {
+  background-color: #222;
+  border-radius: 10px;
+  border: 1px solid #333;
+  padding: 20px;
+  transition: background-color 0.3s ease;
+  /* Flexbox to ensure items inside are well-aligned */
+  display: flex;
+  flex-direction: column;
+}
+
+.secret-item:hover {
+  background-color: #2a2a2a;
+}
+
+.secret-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  /* Allow this to grow to fill the card height */
+  flex-grow: 1;
+}
+
+.secret-id,
+.secret-date,
+.secret-url {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.secret-id label,
+.secret-date label,
+.secret-url label {
+  font-size: 12px;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.secret-id span,
+.secret-date span {
+  font-size: 14px;
+  color: #ccc;
+  font-family: "Courier New", monospace;
+  word-break: break-all;
+}
+
+.url-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: auto; /* Pushes the URL to the bottom of the card */
+}
+
+.url-input {
+  flex: 1;
+  padding: 10px 12px;
+  background-color: #333;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 12px;
+  font-family: "Courier New", monospace;
+  word-break: break-all;
+  min-width: 0; /* Fix for flexbox input overflow */
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #3a3a3a;
+}
+
+.copy-btn {
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.copy-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  /* The grid handles responsiveness, but we can still adjust the URL container on very small screens if needed */
+  .url-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .copy-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .secret-id span,
+  .secret-date span,
+  .url-input {
+    font-size: 11px;
+  }
 }
